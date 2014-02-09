@@ -1,33 +1,29 @@
+<#
+.Synopsis
+   Readme - generates readme.md files for github.
+.NOTES
+   This was the first generator created.
+.ROLE
+   This is part of the generator framework.
+.DESCRIPTION
+   The arguments passed after the name of the generator form the starting content.
+#>
 
 param(
-
 [switch]$Force
 )
 
 
 $template = @"
-       Readme for $($args)
+Readme for $($args)
 "@
+
 
 $filename = "readme.md"
 
-$shouldWrite = !(test-path $filename)
 
-if (!$shouldWrite)
-{
-    $shouldWrite = $Force
+Save-Protected -filename $filename -force $Force -action {
+    $template |  out-file -FilePath $filename
 }
-
-if ($shouldWrite)
-{
-   $template |  out-file -FilePath $filename 
-   write-host "written $filename" 
-}
-else
-{
-    Write-Host "Unable to write $filename use force"
-}
-
-    
 
 
