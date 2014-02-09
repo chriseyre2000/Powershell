@@ -10,7 +10,7 @@
 .NOTES
    General notes
 .COMPONENT
-   The component this cmdlet belongs to
+   Generator
 .ROLE
    This is part of the generator framework.
 #>
@@ -108,6 +108,3 @@ function Invoke-Generator()
       . $templateScript $paramList
    }
 }
-
-
-
