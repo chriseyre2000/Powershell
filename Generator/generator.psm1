@@ -67,14 +67,16 @@ function Invoke-Generator()
     [CmdletBinding()]
 	param(
        [parameter(Mandatory=$true,
-                  ParameterSetName="Generator")]
+                  ParameterSetName="Generator",
+                  Position=0)]
        [string]$generator,
 
-       [parameter(ParameterSetName="Generator")]
+       [parameter(ParameterSetName="Generator", Position=1)]
        [Switch]$Force = $false,
        
        [Parameter(ValueFromRemainingArguments = $true,
                   ParameterSetName="Generator")]
+       [Alias("msg")]
        [object[]]$paramList,
 
        [parameter(Mandatory=$true, ParameterSetName="Documentation")]
