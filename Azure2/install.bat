@@ -1,0 +1,1 @@
+nuget install windowsazure.storage -version 2.1.0.4
