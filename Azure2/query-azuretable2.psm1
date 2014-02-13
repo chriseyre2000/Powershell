@@ -1,3 +1,10 @@
+<#
+.EXAMPLE
+   This shows exposing powershell queries
+   
+   Search-AzureTableStorageV2 | % { EntityToObject $_ } | select PartitionKey,RowKey,Level,Message | ft -AutoSize
+#>
+
 $codePath = "D:\dev\github\Powershell\Azure2"
 
 $edmlib    = "$codePath\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll"
@@ -50,3 +57,34 @@ function Search-AzureTableStorageV2()
     }
 }
 
+function Update-TableStorage()
+{
+    param(
+        [string]$connectionString = "UseDevelopmentStorage=true;", 
+        [string]$tableName = "WADLogsTable", 
+        $entity
+    )
+
+    $storageAccount = [Microsoft.WindowsAzure.Storage.CloudStorageAccount]::Parse($connectionString)
+    $tableClient = $storageAccount.CreateCloudTableClient()
+    $cloudTable = $tableClient.GetTableReference($tableName)
+
+    $insertOrReplaceOperation = TableOperation.InsertOrReplace($entity);
+
+   // Execute the operation.
+   $cloudTable.Execute($insertOrReplaceOperation)
+
+}
+
+function EntityToObject ($item)
+{
+
+    $p = new-object PSObject
+    $p | Add-Member -Name ETag -TypeName string -Value $item.ETag -MemberType NoteProperty 
+    $p | Add-Member -Name PartitionKey -TypeName string -Value $item.PartitionKey -MemberType NoteProperty
+    $p | Add-Member -Name RowKey -TypeName string -Value $item.RowKey -MemberType NoteProperty
+    $p | Add-Member -Name Timestamp -TypeName datetime -Value $item.Timestamp -MemberType NoteProperty
+
+    $item.Properties.Keys | foreach { $type = $item.Properties[$_].PropertyType; $value = $item.Properties[$_].PropertyAsObject ; Add-Member -InputObject $p -Name $_ -Value $value -TypeName $type -MemberType NoteProperty -Force }
+    $p
+}
