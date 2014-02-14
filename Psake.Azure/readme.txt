@@ -1,0 +1,1 @@
+http://www.pseale.com/blog/StealIdeasFromThesePsakeScripts.aspx
