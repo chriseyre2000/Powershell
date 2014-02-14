@@ -24,23 +24,16 @@ task ? -Description "Helper to display task info" {
 	Write-Documentation
 }
 
+task DocumentMsBuild {
+   msbuild /?
+}
+
 task ReleaseBuild {
-  msbuild Azure.PackageMe.sln /t:Rebuild /p:Configuration=Release
+  msbuild Azure.PackageMe.sln /t:Rebuild /p:Configuration=$configuration
 }
 
 task Publish {
-  msbuild Azure.PackageMe.sln /t:Publish /p:Configuration=Release
+  msbuild Azure.PackageMe.sln /t:Publish /p:Configuration=$configuration
 }
-
-task DebugBuild {
-  msbuild Azure.PackageMe.sln /t:Rebuild /p:Configuration=Debug
-}
-
-task DebugPublish {
-  msbuild Azure.PackageMe.sln /t:Publish /p:Configuration=Debug
-}
-
 
 task BuildAndPublish -depends ReleaseBuild,Publish
-
-task BuildAndPublishDebug -depends DebugBuild,DebugPublish

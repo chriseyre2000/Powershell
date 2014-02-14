@@ -1,1 +1,1 @@
-powershell .\psake.ps1 "default.ps1" "BuildAndPublish" "4.5.1" 
+powershell .\psake.ps1 "default.ps1" "BuildAndPublish" "4.5.1" "$false" "" "@{'configuration'='Debug'}"
