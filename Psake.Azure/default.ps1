@@ -28,7 +28,7 @@ task DocumentMsBuild {
    msbuild /?
 }
 
-task ReleaseBuild {
+task Build {
   msbuild Azure.PackageMe.sln /t:Rebuild /p:Configuration=$configuration
 }
 
@@ -36,4 +36,4 @@ task Publish {
   msbuild Azure.PackageMe.sln /t:Publish /p:Configuration=$configuration
 }
 
-task BuildAndPublish -depends ReleaseBuild,Publish
+task BuildAndPublish -depends Build,Publish
