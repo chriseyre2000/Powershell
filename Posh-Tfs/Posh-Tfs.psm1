@@ -147,6 +147,25 @@ function Update-TfsChangesetComment()
     . $tfpath changeset $changesetNumber /comment:$comment   
 }
 
+function out-tfsprompt()
+{
+    $dict = Get-tfsstatus | Select-String -Pattern ".* (?<Change>add|edit|delete)(\w*)(?<Path>.*)" | select -ExpandProperty Matches | % { $_.Groups["Change"].Captures.Value } | group -NoElement
+
+    $add  = $dict | where Name -eq add | select -ExpandProperty Count
+    $edit = $dict | where Name -eq edit | select -ExpandProperty Count
+    $delete = $dict | where Name -eq delete | select -ExpandProperty Count
+    if ($add -eq $null) { $add = 0 }
+    if ($edit -eq $null) { $edit = 0}
+    if ($delte -eq $null) { $delete = 0} 
+
+    "PS $pwd [+$add ~$edit -$delete]> "
+}
+
+function prompt()
+{
+    out-tfsprompt
+}
+
 #<#
 #.Synopsis
 #Updates comments and notes in the changeset
