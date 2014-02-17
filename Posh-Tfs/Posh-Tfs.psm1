@@ -187,3 +187,83 @@ function out-tfsprompt()
 #    )
 #    . $tfpath changeset $changesetNumber /notes:`("$notekey"="$notevalue"`)
 #}
+
+<#
+.Synopsis
+Get details about revision and changeset details.
+#>
+function get-tfsinfo()
+{
+    param (
+        [string]$itemspec = "*",
+        [string]$versionspec
+    )
+
+    if ($versionspec -eq $null)
+    {
+        . $tfpath info $itemspec
+    }
+    else 
+    {
+        . $tfpath info $itemspec /version:$versionspec
+    }
+}
+
+
+<#
+.Synopsis
+Get details about revision and changeset details. Recursively
+#>
+function get-tfsinforecursive()
+{
+    param (
+        [string]$itemspec = "*",
+        [string]$versionspec
+    )
+
+    if ($versionspec -eq $null)
+    {
+        . $tfpath info $itemspec /recursive
+    }
+    else 
+    {
+        . $tfpath info $itemspec /version:$versionspec /recursive
+    }
+}
+
+function get-tfshistory()
+{
+    param (
+        [string]$itemspec = "*",
+        [string]$versionspec
+    )
+
+    if ($versionspec -eq $null)
+    {
+        . $tfpath history $itemspec
+    }
+    else 
+    {
+        . $tfpath history $itemspec /version:$versionspec
+    }
+}
+
+function get-tfsworkfold($item)
+{
+    . $tfpath workfold $item
+}
+
+function invoke-tfsundo($itemspec)
+{
+    . $tfpath undo $itemspec
+}
+
+function invoke-tfsundelete($itemspec)
+{
+    . $tfpath undelete $itemspec
+}
+
+function invoke-tfsrollback($itemspec)
+{
+    . $tfpath rollback $itemspec
+}
