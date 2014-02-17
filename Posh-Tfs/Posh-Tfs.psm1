@@ -84,7 +84,7 @@ This is something that the vs ide is not good at.
 #>
 function Get-tfsStatus()
 {
-    . $tfpath status /recursive
+    . $tfpath status "$pwd\*" /recursive
 }
 
 <#
@@ -161,10 +161,11 @@ function out-tfsprompt()
     "PS $pwd [+$add ~$edit -$delete]> "
 }
 
-function prompt()
-{
-    out-tfsprompt
-}
+# This can be a little too slow
+#function prompt()
+#{
+#    out-tfsprompt
+#}
 
 #<#
 #.Synopsis
