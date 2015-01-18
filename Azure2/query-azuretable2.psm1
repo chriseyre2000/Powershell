@@ -18,6 +18,39 @@ try
   Add-Type -path "$spatial"
   Add-Type -path "$odata"
   Add-Type -path "$azurelib" 
+
+  Add-Type  -ReferencedAssemblies "$azurelib","System.Linq" -TypeDefinition @"
+
+    public class WADLogsTableEntity : Microsoft.WindowsAzure.Storage.Table.TableEntity
+    {
+        public string Role { get; set; }
+        public int Level { get; set; }
+        public int DeploymentId { get; set; }
+        public string Message { get; set; }
+        public string RoleInstance { get; set; }
+    }
+
+    public class WADQuery
+    {
+        Microsoft.WindowsAzure.Storage.Table.TableQuery<WADLogsTableEntity> _innerQuery;
+
+        public WADQuery()
+        {
+            _innerQuery = new Microsoft.WindowsAzure.Storage.Table.TableQuery<WADLogsTableEntity>();
+        }
+       
+        public System.Collections.Generic.IEnumerable<WADLogsTableEntity> Query(string connectionString, string filter)
+        {
+            var client = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(connectionString).CreateCloudTableClient();
+            var _innerQuery = new Microsoft.WindowsAzure.Storage.Table.TableQuery<WADLogsTableEntity>();
+            _innerQuery.FilterString = filter;
+            Microsoft.WindowsAzure.Storage.Table.CloudTable cloudTable = client.GetTableReference("WADLogsTable");
+            return cloudTable.ExecuteQuery<WADLogsTableEntity>(_innerQuery);
+        }
+    }
+
+
+"@
 }
 catch
 {
@@ -55,6 +88,33 @@ function Search-AzureTableStorageV2()
     {
         write-host $_.Exception
     }
+}
+
+function Search-AzureWADLogsTable()
+{
+    param(
+        [string]$connectionString = "UseDevelopmentStorage=true;", 
+        [string]$filterString = $null
+    )
+
+    $tableName = "WADLogsTable" #Fixed  
+
+    if($filterString -eq $null)
+    {
+        $filterString = "PartitionKey gt '$("0" + [System.DateTime]::UtcNow.AddYears(-1).Ticks)'"
+    }
+
+    $query = New-Object "WADQuery"
+
+    try
+    {
+       $query.Query($connectionString, $filterString);
+    }
+    catch
+    {
+        write-host $_.Exception
+    }
+
 }
 
 function Update-TableStorage()
