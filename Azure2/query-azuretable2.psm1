@@ -5,6 +5,10 @@
    Search-AzureTableStorageV2 | % { EntityToObject $_ } | select PartitionKey,RowKey,Level,Message | ft -AutoSize
 #>
 
+# This updates the package to the latest 
+# nuget install windowsazure.storage
+
+#Fix this up.
 $codePath = "D:\dev\Working\Powershell\Azure2"
 
 $edmlib    = "$codePath\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll"
