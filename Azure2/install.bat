@@ -1,1 +1,1 @@
-nuget install windowsazure.storage -version 2.1.0.4
+nuget install windowsazure.storage -version 4.3.0

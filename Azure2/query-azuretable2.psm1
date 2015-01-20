@@ -5,19 +5,22 @@
    Search-AzureTableStorageV2 | % { EntityToObject $_ } | select PartitionKey,RowKey,Level,Message | ft -AutoSize
 #>
 
-$codePath = "D:\dev\github\Powershell\Azure2"
+$codePath = "D:\dev\Working\Powershell\Azure2"
 
-$edmlib    = "$codePath\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll"
-$spatial   = "$codePath\System.Spatial.5.2.0\lib\net40\System.Spatial.dll"                                                 
-$odata     = "$codePath\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll"                                     
-$azurelib  = "$codePath\windowsazure.storage.2.1.0.4\lib\net40\Microsoft.WindowsAzure.Storage.dll"             
+$edmlib    = "$codePath\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll"
+$spatial   = "$codePath\System.Spatial.5.6.2\lib\net40\System.Spatial.dll" 
+$odata     = "$codePath\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll"                                     
+$azurelib  = "$codePath\windowsazure.storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll"             
+$client    = "$codePath\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll"
 
 try
 {
   Add-Type -path "$edmlib" 
   Add-Type -path "$spatial"
   Add-Type -path "$odata"
+  Add-Type -path "$client"
   Add-Type -path "$azurelib" 
+
 
   Add-Type  -ReferencedAssemblies "$azurelib","System.Linq" -TypeDefinition @"
 
